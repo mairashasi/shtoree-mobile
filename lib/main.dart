@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shtoree/menu.dart';
+import 'package:shtoree/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
