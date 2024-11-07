@@ -140,26 +140,36 @@ class ItemHomepage {
 class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
 
-  final ItemHomepage item; 
-  
-  const ItemCard(this.item, {super.key}); 
+  final ItemHomepage item;
+
+  const ItemCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Setting different colors for each button
+    Color backgroundColor;
+    if (item.name == "Lihat Daftar Produk") {
+      backgroundColor = Colors.blueAccent; // Color for "Lihat Daftar Produk"
+    } else if (item.name == "Tambah Produk") {
+      backgroundColor = Colors.greenAccent; // Color for "Tambah Produk"
+    } else if (item.name == "Logout") {
+      backgroundColor = Colors.redAccent; // Color for "Logout"
+    } else {
+      backgroundColor = Theme.of(context).colorScheme.secondary;
+    }
+
     return Material(
       // Menentukan warna latar belakang dari tema aplikasi.
-      color: Theme.of(context).colorScheme.secondary,
+      color: backgroundColor,
       // Membuat sudut kartu melengkung.
       borderRadius: BorderRadius.circular(12),
-      
       child: InkWell(
         // Aksi ketika kartu ditekan.
         onTap: () {
-          // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
+              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
             );
         },
         // Container untuk menyimpan Icon dan Text
@@ -187,7 +197,5 @@ class ItemCard extends StatelessWidget {
         ),
       ),
     );
-  }  
+  }
 }
-
-
