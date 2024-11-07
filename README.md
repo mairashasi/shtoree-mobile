@@ -52,3 +52,77 @@
         },
  ```
  - Terakhir saya menampilkan tombol ini dalam GridView pada MyHomePage agar ItemCard muncul dalam format grid, sehingga tombol-tombol tersebut tersusun rapi dan mudah diakses.
+
+# Tugas 2 PBP
+
+ **1. Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?**
+ - const di Flutter digunakan untuk mendeklarasikan objek atau widget sebagai objek yang bersifat immutable (tidak bisa berubah) dan sudah ditentukan nilai tetapnya sejak compile-time. Keuntungan menggunakan const adalah peningkatan efisiensi karena objek tidak akan dibuat berulang-ulang ketika aplikasi berjalan, dan Flutter dapat menggunakan instance yang sama berulang kali (karena nilai konstanta tidak pernah berubah).
+ - Sebaiknya gunakan const ketika nilai dari widget atau objek tersebut sudah diketahui sebelumnya dan tidak akan berubah sepanjang aplikasi berjalan. Contohnya, ketika Anda membuat Text Widget yang isinya tidak akan berubah, Anda bisa mendeklarasikannya dengan const. Sebaiknya tidak menggunakan const jika objek atau widget tersebut memiliki nilai yang bisa berubah, seperti data dari input pengguna atau variabel yang tergantung pada kondisi tertentu.
+
+ **2. Jelaskan dan bandingkan penggunaan Column dan Row pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!**
+ - Column digunakan untuk menyusun widget secara vertikal (dari atas ke bawah), sedangkan Row digunakan untuk menyusun widget secara horizontal (dari kiri ke kanan). Pada aplikasi kita, kita menggunakan Column untuk menyusun widget seperti informasi pengguna (InfoCard) dan grid dari tombol-tombol yang ada.
+ - contoh column :
+ ```bash
+ child: Column(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    // Menampilkan teks sambutan dengan gaya tebal dan ukuran 18.
+    const Padding(
+      padding: EdgeInsets.only(top: 16.0),
+      child: Text(
+        'Welcome to shtoree',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18.0,
+        ),
+      ),
+    ),
+    // Menampilkan grid item secara vertikal dalam sebuah kolom.
+    GridView.count(
+      primary: true,
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      crossAxisCount: 3,
+      shrinkWrap: true,
+      children: items.map((ItemHomepage item) {
+        return ItemCard(item);
+      }).toList(),
+    ),
+  ],
+ ),
+ ```
+ - contoh row:
+ ```bash
+ Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    InfoCard(title: 'NPM', content: npm),
+    InfoCard(title: 'Name', content: name),
+    InfoCard(title: 'Class', content: className),
+  ],
+ ),
+ ```
+
+ **3. Sebutkan apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!**
+ - Pada tugas ini, elemen input yang saya gunakan adalah:
+   - TextFormField untuk menginput name, amount, dan description.
+ - Elemen input lain yang tidak digunakan antara lain:
+   - Slider, yang bisa digunakan untuk memilih nilai dalam rentang tertentu.
+   - Checkbox untuk opsi boolean.
+   - DropdownButton untuk memilih dari beberapa opsi yang tersedia.
+   - Switch, untuk on/off state. Contoh TextFormField pada form kita:
+
+ **4. Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?**
+ - Untuk mengatur tema dalam aplikasi Flutter, saya menggunakan ThemeData di dalam MaterialApp, yang memungkinkan pengaturan warna utama, warna aksen, teks, dan elemen-elemen lain secara konsisten di seluruh aplikasi. Pada aplikasi ini, saya menggunakan tema sebagai berikut:
+ ```bash
+ theme: ThemeData(
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: Colors.red,
+  ).copyWith(secondary: const Color(0xFFA11212)),
+ ),
+ ```
+ Dengan pengaturan ini, aplikasi memiliki warna utama (primarySwatch) dan warna sekunder (secondary) yang konsisten. Tema ini digunakan di berbagai widget, seperti warna AppBar dan latar belakang tombol, agar konsisten di seluruh aplikasi.
+
+
+ **5. Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?**

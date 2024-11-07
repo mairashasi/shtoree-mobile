@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shtoree/widgets/left_drawer.dart';
 import 'package:shtoree/widgets/item_card.dart';
+import 'package:shtoree/screens/additem_form.dart';
 
 class MyHomePage extends StatelessWidget {
   final String npm = '2306245724'; // NPM
@@ -8,8 +9,8 @@ class MyHomePage extends StatelessWidget {
   final String className = 'PBP B'; // Kelas
 
   final List<ItemHomepage> items = [ // berisi tombol''
-    ItemHomepage("Lihat Daftar Produk", Icons.list),
-    ItemHomepage("Tambah Produk", Icons.add),
+    ItemHomepage("Lihat Daftar Item", Icons.list),
+    ItemHomepage("Tambah Item", Icons.add),
     ItemHomepage("Logout", Icons.logout),
   ];
 
@@ -21,7 +22,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       // AppBar adalah bagian atas halaman yang menampilkan judul.
       appBar: AppBar(
-        // Judul aplikasi "Mental Health Tracker" dengan teks putih dan tebal.
+        // Judul aplikasi "shtoree" dengan teks putih dan tebal.
         title: const Text(
           'shtoree',
           style: TextStyle(
@@ -85,7 +86,27 @@ class MyHomePage extends StatelessWidget {
 
                     // Menampilkan ItemCard untuk setiap item dalam list items.
                     children: items.map((ItemHomepage item) {
-                      return ItemCard(item);
+                      return ItemCard(
+                        item,
+                        onTap: () {
+                          // Navigasi tergantung pada tombol yang ditekan
+                          if (item.name == "Tambah Item") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AddItemFormPage(),
+                              ),
+                            );
+                          } else {
+                            // Menampilkan snackbar jika bukan "Tambah Item"
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
+                              );
+                          }
+                        },
+                      );
                     }).toList(),
                   ),
                 ],
@@ -141,17 +162,18 @@ class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
 
   final ItemHomepage item;
+  final VoidCallback onTap; // Callback ketika tombol ditekan
 
-  const ItemCard(this.item, {super.key});
+  const ItemCard(this.item, {super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     // Setting different colors for each button
     Color backgroundColor;
-    if (item.name == "Lihat Daftar Produk") {
-      backgroundColor = Colors.blueAccent; // Color for "Lihat Daftar Produk"
-    } else if (item.name == "Tambah Produk") {
-      backgroundColor = Colors.greenAccent; // Color for "Tambah Produk"
+    if (item.name == "Lihat Daftar Item") {
+      backgroundColor = Colors.blueAccent; // Color for "Lihat Daftar Item"
+    } else if (item.name == "Tambah Item") {
+      backgroundColor = Colors.greenAccent; // Color for "Tambah Item"
     } else if (item.name == "Logout") {
       backgroundColor = Colors.redAccent; // Color for "Logout"
     } else {
@@ -164,14 +186,8 @@ class ItemCard extends StatelessWidget {
       // Membuat sudut kartu melengkung.
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        // Aksi ketika kartu ditekan.
-        onTap: () {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
-            );
-        },
+        // Menggunakan callback yang diberikan
+        onTap: onTap,
         // Container untuk menyimpan Icon dan Text
         child: Container(
           padding: const EdgeInsets.all(8),
