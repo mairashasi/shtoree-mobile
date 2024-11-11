@@ -114,7 +114,7 @@
    - Switch, untuk on/off state. Contoh TextFormField pada form kita:
 
  **4. Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?**
- - Untuk mengatur tema dalam aplikasi Flutter, saya menggunakan ThemeData di dalam MaterialApp, yang memungkinkan pengaturan warna utama, warna aksen, teks, dan elemen-elemen lain secara konsisten di seluruh aplikasi. Pada aplikasi ini, saya menggunakan tema sebagai berikut:
+ - Untuk mengatur tema dalam aplikasi Flutter, saya menggunakan ThemeData dalam MaterialApp. Ini memungkinkan saya untuk mendefinisikan warna utama (primarySwatch), warna sekunder (secondary), gaya teks, dan elemen lainnya agar aplikasi terlihat konsisten di semua halaman. Dalam aplikasi saya, tema diimplementasikan sebagai berikut:
  ```bash
  theme: ThemeData(
   colorScheme: ColorScheme.fromSwatch(
@@ -122,7 +122,17 @@
   ).copyWith(secondary: const Color(0xFFA11212)),
  ),
  ```
- Dengan pengaturan ini, aplikasi memiliki warna utama (primarySwatch) dan warna sekunder (secondary) yang konsisten. Tema ini digunakan di berbagai widget, seperti warna AppBar dan latar belakang tombol, agar konsisten di seluruh aplikasi.
+ Dengan begitu warna utama digunakan untuk elemen seperti AppBar dan FloatingActionButton, sementara warna sekunder digunakan untuk elemen lainnya seperti Icon pada ItemCard.
 
 
  **5. Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?**
+ - Saya menggunakan Navigator dan MaterialPageRoute untuk menangani navigasi antar halaman. Navigator.push digunakan untuk menambahkan halaman baru ke stack, sehingga pengguna dapat kembali ke halaman sebelumnya menggunakan tombol "Back". Sebagai contoh, ketika pengguna menekan tombol "Tambah Produk", halaman AddItemFormPage dibuka menggunakan Navigator.push:
+ ```bash 
+ Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const AddItemFormPage(),
+  ),
+ );
+ ```
+ Dengan cara ini pengguna bisa menavigasi antar halaman secara fleksibel, dan ketika pengguna menyelesaikan penambahan produk, mereka dapat kembali ke halaman utama dengan mudah menggunakan tombol "Back".
