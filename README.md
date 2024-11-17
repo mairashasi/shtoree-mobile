@@ -1,6 +1,6 @@
 **Maira Shasmeen Mazaya 2306245724**
 
-# Tugas 2 PBP
+# Tugas 7 PBP
 
  **1. Jelaskan apa yang dimaksud dengan stateless widget dan stateful widget, dan jelaskan perbedaan dari keduanya :**
  - Stateless Widget adalah widget yang bersifat statis, artinya tampilannya tidak akan berubah setelah dibuat. Biasanya digunakan untuk elemen yang ga memerlukan pembaruan atau interaksi yang mengubah data. Data yang ditampilkin oleh widget ini sifatnya tetap dan tidak akan berubah setelah widget tersebut dibuat, seperti teks atau ikon. Sebaliknya, Stateful Widget itu widget yang bisa berubah selama aplikasi berjalan, biasanya karena ada interaksi dari pengguna atau ada perubahan data. Contohnya adalah tombol yang bisa ditekan, form input, atau tampilan yang berubah saat ada data baru. Jadi Stateless Widget itu untuk elemen yang selalu tetap kalau Stateful Widget untuk elemen yang dapat berubah atau dinamis.
@@ -53,7 +53,7 @@
  ```
  - Terakhir saya menampilkan tombol ini dalam GridView pada MyHomePage agar ItemCard muncul dalam format grid, sehingga tombol-tombol tersebut tersusun rapi dan mudah diakses.
 
-# Tugas 2 PBP
+# Tugas 8 PBP
 
  **1. Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?**
  - const di Flutter digunakan untuk mendeklarasikan objek atau widget sebagai objek yang bersifat immutable (tidak bisa berubah) dan sudah ditentukan nilai tetapnya sejak compile-time. Keuntungan menggunakan const adalah peningkatan efisiensi karena objek tidak akan dibuat berulang-ulang ketika aplikasi berjalan, dan Flutter dapat menggunakan instance yang sama berulang kali (karena nilai konstanta tidak pernah berubah).
@@ -136,3 +136,19 @@
  );
  ```
  Dengan cara ini pengguna bisa menavigasi antar halaman secara fleksibel, dan ketika pengguna menyelesaikan penambahan produk, mereka dapat kembali ke halaman utama dengan mudah menggunakan tombol "Back".
+
+ # Tugas 9 PBP
+
+ **1.  Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini**
+ - 
+
+ **2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.**
+
+
+ **3. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.**
+
+
+ **4. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.**
+
+
+ **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).**
