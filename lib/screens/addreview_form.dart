@@ -26,7 +26,7 @@ class _AddReviewFormPageState extends State<AddReviewFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-          child: Text('Form Tambah Item Baru'),
+          child: Text('Form Tambah Review Baru'),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,

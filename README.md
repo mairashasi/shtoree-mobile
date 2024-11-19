@@ -138,17 +138,214 @@
  Dengan cara ini pengguna bisa menavigasi antar halaman secara fleksibel, dan ketika pengguna menyelesaikan penambahan produk, mereka dapat kembali ke halaman utama dengan mudah menggunakan tombol "Back".
 
  # Tugas 9 PBP
+ **1. Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu?**
+ - Membuat model untuk mengambil atau mengirim data JSON penting agar data yang digunakan tetap memiliki struktur yang konsisten dan mudah dipahami oleh aplikasi sehingga mengurangi kemungkinan kesalahan saat memproses data. Tanpa model, pengelolaan data akan lebih sulit karena tipe dan struktur data tidak jelas, yang bisa menyebabkan error saat data diakses atau digunakan. Model juga memudahkan proses debugging dan pengembangan karena memberikan panduan yang jelas tentang bagaimana data JSON harus diolah dan dimanfaatkan.
 
- **1.  Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini**
- - 
+ **2.  Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini**
+ - Library http pada Flutter digunakan untuk berkomunikasi dengan server. Fungsinya itu untuk mengirimkan permintaan (requests) dan menerima responses dari server, seperti GET, POST, PUT, DELETE, dll. Di tugas ini library http memungkinkan Flutter untuk akases API backend yang ditulis di django, jadi data bisa diambil dari server atau dikirim untuk disimpan. Hal ini penting untuk melakukan proses seperti login, registrasi, pengambilan daftar produk, dan lain-lain.
 
- **2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.**
+ **3. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.**
+ - CookieRequest digunakan untuk mengelola login berbasis cookie. Setelah pengguna login, CookieRequest menyimpan data cookie yang diberikan oleh server untuk menjaga sesi tetap aktif. Cookie ini penting untuk memastikan pengguna yang sudah login bisa mengakses bagian lain dari aplikasi yang butuh autentikasi, seperti melihat atau mengedit data. Karena alasan itu, CookieRequest dibagikan ke semua bagian aplikasi agar tiap bagian bisa tahu kalau pengguna sudah login dan menggunakan cookie tersebut untuk setiap permintaan ke server.
 
+ **4. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.**
+ - Input Data : Pengguna memasukkan data ke form seperti nama produk, harga, dan rating.
+ - Mengirim ke Server : Data yang diisi user kemudian dikirim ke server django dengan menggunakan request.postJson(). Ini menggunakan URL endpoint yang sudah disiapkan di backend django.
+ - Memproses di Server : django akan menerima data ini dan menyimpannya di database. Misalnya saat pengguna menambahkan review, django akan menyimpan data tersebut sebagai data baru.
+ - Menampilkan di Flutter : Setelah data disimpan, server bisa mengirimkan kembali data terbaru, dan Flutter menggunakan FutureBuilder untuk mendapatkan data tersebut dan menampilkannya dalam bentuk list pada halaman "Review List".
 
- **3. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.**
+ **5. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke django hingga selesainya proses autentikasi oleh django dan tampilnya menu pada Flutter.**
+ 
+ A. Login:
+  - Pengguna memasukkan username dan password, lalu menekan tombol login.
+  - Flutter mengirim data ini ke server django menggunakan request.postJson() ke URL login.
+  - django memeriksa apakah username dan password benar. Jika benar, django mengirimkan cookie sesi ke flutter, yang kemudian disimpan di CookieRequest.
+  - Setelah itu, pengguna diarahkan ke halaman utama (MyHomePage), dan cookie sesi ini dipakai untuk membuktikan bahwa pengguna sudah login.
+ 
+ B.  Register:
+  - Pengguna memasukkan data seperti username dan password.
+  - Flutter mengirim data ke endpoint register di django, dan django membuat akun baru untuk pengguna tersebut.
+  - Setelah berhasil register, pengguna bisa login menggunakan akun barunya.
 
+ C. Logout:
+  - Ketika pengguna menekan tombol logout, flutter menggunakan request.logout() untuk mengirim permintaan logout ke django.
+  - django akan menghapus sesi pengguna dan mengembalikan respon berhasil logout.
+  - Setelah itu flutter akan menghapus informasi sesi dari CookieRequest dan mengarahkan pengguna kembali ke halaman login.
 
- **4. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.**
+ **6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).**
+ - Pertama saya mengimplementasikan registrasi akun dan autentikasi pada Flutter dengan cara membuat authentication app di django. Lalu memodifikasi settings.py di django untuk menambahkan app ini dan juga menginstal dependensi yang diperlukan melalui pip install juga menambahkan requirements.txt.
+ - Kedua saya membuat metode view di views.py dalam authentication yang berfungsi untuk menjalankan login dan mengatur urls nya. Untuk integrasi sistem autentikasi pada flutter, saya instal package yang seperti ada pada tutorial, kemudian saya mengubah main.dart saya menjadi seperti berikut:
+ ```bash
+ import 'package:flutter/material.dart';
+import 'package:shtoree/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
+void main() {
+  runApp(const MyApp());
+}
 
- **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).**
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'shtoree',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.deepPurple,
+          ).copyWith(secondary: Colors.deepPurple[400]),
+        ),
+        home: const LoginPage(),
+      ),
+    );
+  }
+}
+```
+dan menambhakan login.dart pada flutter untuk menampilkan halaman login.
+- Ketiga menambahkn fungsi register di views.py django authentication  agar dapat melakukan registrasi bagi pengguna baru. Kemudian lanjut membuat screen baru bernama register.dart.
+- Untuk membuat model kustom, saya mengakses JSON dari server django lokal saya, kemudian menggunakan situs quicktype untuk mengonversi data JSON menjadi kode dart. Hasil konversi tersebut saya masukkan ke dalam file rating.dart yang ditempatkan di folder models di dalam lib.
+- Untuk mengambil data dari django, saya menggunakan command flutter pub add http untuk menambahkan package http pada proyek flutter. Saya juga memodifikasi beberapa file di folder Android sesuai instruksi tutorial untuk mengizinkan akses jaringan.
+- Keenam saya membuat halaman baru bernama list_product_rating.dart, yang berisi logika untuk menampilkan daftar review produk. Saya menyesuaikan tampilan ini agar sesuai dengan Django dan Flutter saya. Kemudian saya menambahkan halaman ini ke dalam widget left drawer dan melakukan penyesuaian lainnya pada file lain sehingga halamanmnya dapat diakses melalui menu dan drawer.
+- Lalu saya melakukan penyesuaian pada list_product_rating.dart, sehingga setiap kotak item yang dipilih dapat diarahkan ke detail review (rating_detail.dart), code nya jadi gini :
+```bash
+import pacakge-package
+
+class ProductPage extends StatefulWidget {
+  const ProductPage({super.key});
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  Future<List<Product>> fetchProducts(CookieRequest request) async {
+    final response = await request.get('http://127.0.0.1:8000/json/');
+
+    // Melakukan decode response menjadi bentuk json
+    var data = response;
+
+    // Melakukan konversi data json menjadi object Product
+    List<Product> listProduct = [];
+    for (var d in data) {
+      if (d != null) {
+        listProduct.add(Product.fromJson(d));
+      }
+    }
+    return listProduct;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Review List'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      drawer: const LeftDrawer(),
+      body: FutureBuilder(
+        future: fetchProducts(request),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Belum ada review pada produk.',
+                      style: TextStyle(fontSize: 20, color: Color(0xff59A5D8)),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) {
+                  Product product = snapshot.data![index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigasi ke halaman detail ketika item di klik
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RatingDetailPage(product: product),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Nama produk dengan style tebal
+                          Text(
+                            product.fields.name,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          // Harga produk
+                          Text(
+                            "Price: Rp ${product.fields.price}",
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          // Feedback produk
+                          Text(
+                            product.fields.feedback,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          // Rating produk dengan ikon bintang
+                          Row(
+                            children: [
+                              Text(
+                                "${product.fields.rating}",
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 16.0,
+```
+- Untuk mengintegrasikan form flutter dengan django, saya memodifikasi file views.py pada django main app dengan menambahkan fungsi create_product_review_flutter. Fungsi ini kemudian dipanggil dari addreview_form.dart di proyek Flutter, dan saya melakukan penyesuaian fungsi lainnya untuk memastikan integrasi antara form flutter dan django dapat berjalan dengan baik.
+- Terakhir, saya menambahkan fitur logout yang mekanismenya kurang lebih sama dengan fitur login, menggunakan pbp_django_auth untuk menangani proses autentikasi keluar dari sistem.
+- Intinya saya memastikan agar flutter saya erjalan dengan lancar dan sesuai dengan django yang kemarin telaha dibuat.

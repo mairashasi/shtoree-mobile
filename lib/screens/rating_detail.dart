@@ -10,7 +10,7 @@ class RatingDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rating Detail'),
+        title: const Text('Review Detail'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -19,7 +19,6 @@ class RatingDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Nama produk dengan style tebal
             Text(
               product.fields.name,
               style: const TextStyle(

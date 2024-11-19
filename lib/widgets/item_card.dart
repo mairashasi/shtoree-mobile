@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shtoree/screens/addreview_form.dart';
 import 'package:shtoree/screens/list_product_rating.dart';
 import 'package:shtoree/screens/login.dart';
-import 'package:shtoree/screens/menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
