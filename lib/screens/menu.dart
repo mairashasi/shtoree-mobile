@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:shtoree/widgets/left_drawer.dart';
 import 'package:shtoree/widgets/item_card.dart';
-import 'package:shtoree/screens/additem_form.dart';
+import 'package:shtoree/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
+  MyHomePage({super.key});
+
   final String npm = '2306245724'; // NPM
   final String name = 'Maira Shasmeen Mazaya'; // Nama
   final String className = 'PBP B'; // Kelas
 
-  final List<ItemHomepage> items = [ // berisi tombol''
-    ItemHomepage("Lihat Daftar Item", Icons.list),
-    ItemHomepage("Tambah Item", Icons.add),
+  final List<ItemHomepage> items = [
+    ItemHomepage("Lihat Daftar Review", Icons.list),
+    ItemHomepage("Tambah Review", Icons.add),
     ItemHomepage("Logout", Icons.logout),
   ];
-
-  MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       // AppBar adalah bagian atas halaman yang menampilkan judul.
       appBar: AppBar(
-        // Judul aplikasi "shtoree" dengan teks putih dan tebal.
+        // Judul aplikasi "Mental Health Tracker" dengan teks putih dan tebal.
         title: const Text(
           'shtoree',
           style: TextStyle(
@@ -30,12 +29,10 @@ class MyHomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
         // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
         backgroundColor: Theme.of(context).colorScheme.primary,
-        // Mengganti warna icon drawer menjadi putih
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      // Masukkan drawer sebagai parameter nilai drawer dari widget Scaffold
       drawer: const LeftDrawer(),
       // Body halaman dengan padding di sekelilingnya.
       body: Padding(
@@ -66,14 +63,13 @@ class MyHomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
-                      'Welcome to shtoree',
+                      'Welcome to shtoree!',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
                       ),
                     ),
                   ),
-
                   // Grid untuk menampilkan ItemCard dalam bentuk grid 3 kolom.
                   GridView.count(
                     primary: true,
@@ -86,27 +82,7 @@ class MyHomePage extends StatelessWidget {
 
                     // Menampilkan ItemCard untuk setiap item dalam list items.
                     children: items.map((ItemHomepage item) {
-                      return ItemCard(
-                        item,
-                        onTap: () {
-                          // Navigasi tergantung pada tombol yang ditekan
-                          if (item.name == "Tambah Item") {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AddItemFormPage(),
-                              ),
-                            );
-                          } else {
-                            // Menampilkan snackbar jika bukan "Tambah Item"
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(
-                                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
-                              );
-                          }
-                        },
-                      );
+                      return ItemCard(item);
                     }).toList(),
                   ),
                 ],
@@ -121,8 +97,9 @@ class MyHomePage extends StatelessWidget {
 
 class InfoCard extends StatelessWidget {
   // Kartu informasi yang menampilkan title dan content.
-  final String title; // Judul kartu.
-  final String content; // Isi kartu.
+
+  final String title;  // Judul kartu.
+  final String content;  // Isi kartu.
 
   const InfoCard({super.key, required this.title, required this.content});
 
@@ -145,71 +122,6 @@ class InfoCard extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text(content),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemHomepage {
-  final String name;
-  final IconData icon;
-
-  ItemHomepage(this.name, this.icon);
-}
-
-class ItemCard extends StatelessWidget {
-  // Menampilkan kartu dengan ikon dan nama.
-
-  final ItemHomepage item;
-  final VoidCallback onTap; // Callback ketika tombol ditekan
-
-  const ItemCard(this.item, {super.key, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    // Setting different colors for each button
-    Color backgroundColor;
-    if (item.name == "Lihat Daftar Item") {
-      backgroundColor = Colors.blueAccent; // Color for "Lihat Daftar Item"
-    } else if (item.name == "Tambah Item") {
-      backgroundColor = Colors.greenAccent; // Color for "Tambah Item"
-    } else if (item.name == "Logout") {
-      backgroundColor = Colors.redAccent; // Color for "Logout"
-    } else {
-      backgroundColor = Theme.of(context).colorScheme.secondary;
-    }
-
-    return Material(
-      // Menentukan warna latar belakang dari tema aplikasi.
-      color: backgroundColor,
-      // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        // Menggunakan callback yang diberikan
-        onTap: onTap,
-        // Container untuk menyimpan Icon dan Text
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              // Menyusun ikon dan teks di tengah kartu.
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

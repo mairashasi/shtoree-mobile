@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shtoree/screens/menu.dart';
-import 'package:shtoree/screens/additem_form.dart';
+import 'package:shtoree/screens/addreview_form.dart';
+import 'package:shtoree/screens/list_product_rating.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -52,12 +53,24 @@ class LeftDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.add),
-            title: const Text('Tambah Item'),
+            title: const Text('Tambah Review'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddItemFormPage(),
+                  builder: (context) => const AddReviewFormPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.list),
+            title: const Text('Lihat Daftar Review'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProductPage(),
                 ),
               );
             },
